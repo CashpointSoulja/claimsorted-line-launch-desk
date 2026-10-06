@@ -30,6 +30,9 @@ Product
 - [Service blueprint](docs/service-blueprint.md)
 - [User stories and acceptance criteria](docs/user-stories.md)
 - [Five Whys](docs/five-whys.md) (evidence versus assumptions)
+- [Rollout and adoption plan](docs/rollout-and-adoption.md)
+- [v2 roadmap](docs/v2-roadmap.md)
+- [Role-fit viability memo](docs/role-fit-memo.md) (the 5 JD duties mapped to features, and what isn't covered)
 
 Design and data
 - [Data dictionary](docs/data-dictionary.md)
