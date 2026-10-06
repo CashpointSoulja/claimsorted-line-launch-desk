@@ -2,13 +2,16 @@ import { FRAMEWORK, APPROVERS, validateSpec, evaluateGate, canonicalPack, hashPa
 import { PROGRAMME, SPEC_V1, SPEC_V2, PILOT_CLAIMS } from './samples.js';
 import { draftFromWording } from './drafter.js';
 import { WORDINGS } from './wordings.js';
+import { portfolio } from './lines.js';
+
+const PORTFOLIO = portfolio();
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = { get: k => localStorage.getItem(k), set: (k, v) => localStorage.setItem(k, v) };
 const APPROVER_LABEL = { ops_lead: 'ClaimSorted ops lead', client_programme_owner: 'Client programme owner' };
 
-const state = { programme: PROGRAMME, draft: null, wordingSample: null, source: null, validation: null, gate: null, approvals: {}, publish: null, verify: null, events: [] };
+const state = { line: PORTFOLIO[0].id, programme: PROGRAMME, draft: null, wordingSample: null, source: null, validation: null, gate: null, approvals: {}, publish: null, verify: null, events: [] };
 const metrics = pilotMetrics(PILOT_CLAIMS, PROGRAMME.as_of);
 
 function emit(name, payload) {
@@ -172,6 +175,28 @@ function renderDraft() {
     }).join('')}</tbody></table></div>`;
 }
 
+const STAGE_ICO = { covered: '✓', blocked: '!', missing: '–' };
+
+function renderLines() {
+  $('#line-tabs').innerHTML = PORTFOLIO.map(r => `<button class="line-tab ${r.id === state.line ? 'active' : ''}" role="tab" aria-selected="${r.id === state.line}" data-line="${r.id}"><span>${esc(r.label)}</span><span class="chip ${r.gate.decision === 'READY' ? 'ok' : 'blocker'}">${r.gate.decision}</span><small>${r.covered}/${r.total} stages</small></button>`).join('');
+  $('#line-tabs').querySelectorAll('[data-line]').forEach(b => b.onclick = () => {
+    state.line = b.dataset.line; renderLines();
+    const r = PORTFOLIO.find(x => x.id === state.line);
+    emit('line_selected', { line: r.id, decision: r.gate.decision, open_gaps: r.gate.gaps.length, stages_covered: r.covered });
+  });
+  const r = PORTFOLIO.find(x => x.id === state.line), P = r.programme, g = r.gate;
+  const gaps = g.gaps.map(x => `<li><span class="chip ${x.severity}">${x.severity === 'error' ? 'rejected' : 'blocker'}</span><span><b>${esc(x.rule_id || x.code)}</b> ${esc(x.message)}</span></li>`).join('');
+  $('#line-body').innerHTML = `<div class="line-grid">
+    <div class="panel"><h3>${esc(r.label)}</h3>
+      <div class="kv-list">${[['Client', P.client], ['Product', P.line], ['Wording', P.policy_wording_version], ['Target go-live', P.go_live]].map(([k, v]) => `<div><b>${k}</b> ${esc(v)}</div>`).join('')}</div>
+      <div class="decision ${g.decision} compact"><span class="big">${g.decision}</span><div>${g.decision === 'READY' ? `All ${r.total} stages ready.` : `${g.gaps.length} open gap${g.gaps.length === 1 ? '' : 's'}, ${r.covered}/${r.total} stages ready.`}</div></div>
+      <button class="btn btn-ghost" id="line-open">Open this line's spec in Import</button></div>
+    <div class="panel"><h3>Stages</h3><div class="mini-stages">${g.coverage.map(c => `<div class="mini ${c.status}"><span class="ico">${STAGE_ICO[c.status]}</span><code>${c.stage}</code></div>`).join('')}</div>
+      ${gaps ? `<ul class="gaps">${gaps}</ul>` : '<div class="result ok">No open gaps. The pack can go to approval.</div>'}</div>
+  </div>`;
+  $('#line-open').onclick = () => { loadSpec(r.csv, `Illustrative ${r.label} spec`, r.programme); runValidate(); };
+}
+
 function render() { renderDraft(); renderStepper(); renderValidation(); renderCoverage(); renderGate(); renderPublish(); renderMetrics(); renderAgenda(); renderEvents(); }
 
 function download(name, obj) {
@@ -208,6 +233,7 @@ $('#dl-pack').onclick = () => { if (!state.validation) return; download('handlin
 $('#dl-cases').onclick = () => { if (!state.validation) return; const rc = regressionCases(state.validation); download('regression-cases.json', rc); emit('export_downloaded', { kind: 'regression_cases', count: rc.length }); };
 $('#reset').onclick = () => { localStorage.removeItem('lld.publications'); state.approvals = {}; state.events = []; state.draft = null; state.wordingSample = null; $('#wording').value = ''; loadSpec('', null); $('#csv').value = ''; emit('local_state_reset', {}); };
 
+renderLines();
 renderProgramme();
 metrics && emit('metric_decision', { metric: 'median_cycle_time', decision: metrics.cycleDecision, n_week_1: metrics.cycle[0].n, n_week_2: metrics.cycle[1].n });
 render();

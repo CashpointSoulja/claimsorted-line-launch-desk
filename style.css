@@ -112,7 +112,26 @@ code { font-size: 12.5px; background: var(--light); padding: 1px 6px; border-rad
 .doc-list a { display: inline-block; background: #fff; border-radius: 999px; padding: 8px 16px; text-decoration: none; }
 .foot { max-width: 1120px; margin: 0 auto; padding: 10px 24px 48px; color: var(--grey); font-size: 13px; }
 .linkish { background: none; border: 0; color: var(--blue); font: inherit; cursor: pointer; padding: 0; text-decoration: underline; }
+.line-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 12px; }
+.line-tab { font: inherit; border: 0; background: #fff; border-radius: 14px; padding: 12px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; box-shadow: inset 0 0 0 1px var(--line); }
+.line-tab span:first-child { font-weight: 600; font-size: 14px; }
+.line-tab small { color: var(--grey); font-size: 12px; }
+.line-tab.active { box-shadow: inset 0 0 0 2px var(--blue); }
+.line-tab:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.line-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 12px; }
+.kv-list { display: grid; gap: 4px; font-size: 14px; margin-bottom: 12px; }
+.kv-list b { color: var(--grey); font-weight: 500; }
+.decision.compact { background: var(--light); padding: 12px; gap: 12px; }
+.decision.compact .big { font-size: 22px; padding: 4px 12px; }
+.mini-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+.mini { display: flex; align-items: center; gap: 6px; font-size: 12px; border-radius: 10px; padding: 6px; background: var(--light); }
+.mini .ico { width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: 12px; background: #fff; color: var(--grey); }
+.mini.covered .ico { background: var(--blue); color: #fff; }
+.mini.blocked .ico { background: var(--warn-bg); color: var(--warn); }
+.card-head .chip.tag { margin-left: auto; }
 @media (max-width: 900px) {
+  .line-tabs { grid-template-columns: repeat(3, 1fr); }
+  .line-grid { grid-template-columns: 1fr; }
   .nav { padding: 10px 16px; } .nav-links { display: none; }
   .stepper { grid-template-columns: repeat(4, 1fr); }
   .programme, .tiles { grid-template-columns: repeat(2, 1fr); }
@@ -120,6 +139,8 @@ code { font-size: 12.5px; background: var(--light); padding: 1px 6px; border-rad
   .pub-grid, .metric-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
+  .line-tabs { grid-template-columns: repeat(2, 1fr); }
+  .mini-stages { grid-template-columns: repeat(2, 1fr); }
   main { padding: 0 12px 32px; }
   .brand img { height: 24px; } .brand-product { font-size: 15px; } .nav-cta { padding: 8px 12px; font-size: 14px; }
   .hero { padding: 40px 0 16px; } .hero-copy { font-size: 16px; }
