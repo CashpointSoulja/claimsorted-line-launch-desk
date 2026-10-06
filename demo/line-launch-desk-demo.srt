@@ -1,131 +1,191 @@
 1
-00:00:00,250 --> 00:00:03,271
+00:00:00,150 --> 00:00:02,932
 This is Line Launch Desk, an independent concept
 
 2
-00:00:03,321 --> 00:00:06,917
+00:00:02,982 --> 00:00:06,294
 I built for ClaimSorted's Founding Ops and Strategy role.
 
 3
-00:00:06,967 --> 00:00:09,924
+00:00:06,344 --> 00:00:09,067
 Every client, rule and claim here is synthetic.
 
 4
-00:00:10,574 --> 00:00:14,544
-A fictional pet insurer sends the handling spec for a new line.
+00:00:09,417 --> 00:00:10,861
+Start with the portfolio.
 
 5
-00:00:14,594 --> 00:00:15,438
-Fourteen rows.
+00:00:10,911 --> 00:00:13,253
+The six lines on ClaimSorted's site each
 
 6
-00:00:15,488 --> 00:00:18,628
-I validate it against one shared claims framework.
+00:00:13,303 --> 00:00:15,943
+get a fictional client, run through one gate.
 
 7
-00:00:19,278 --> 00:00:21,357
-Three rows are rejected outright.
+00:00:15,993 --> 00:00:17,019
+Warranty is ready.
 
 8
-00:00:21,407 --> 00:00:23,745
-One identical duplicate is dropped by
+00:00:17,069 --> 00:00:19,649
+General liability holds: old wording, a slow
 
 9
-00:00:23,795 --> 00:00:25,745
-its rule ID, never by its name.
+00:00:19,699 --> 00:00:22,519
+payment SLA, and no complaint or reporting rule.
 
 10
-00:00:25,795 --> 00:00:29,035
-And the eight stage framework shows what's missing:
+00:00:22,569 --> 00:00:23,535
+All illustrative.
 
 11
-00:00:29,085 --> 00:00:32,197
-no complaint route, and no usable reporting rule.
+00:00:23,885 --> 00:00:27,225
+New wording often arrives as a document, not a spreadsheet.
 
 12
-00:00:32,847 --> 00:00:34,238
-So the gate says hold.
+00:00:27,275 --> 00:00:29,237
+I pick the travel sample and draft.
 
 13
-00:00:34,288 --> 00:00:37,577
-Handler authority is above the cap, the payment SLA
+00:00:29,287 --> 00:00:31,305
+A rule based extractor, with no API,
 
 14
-00:00:37,627 --> 00:00:41,899
-is too slow, and a coverage rule cites last year's policy wording.
+00:00:31,355 --> 00:00:33,661
+quotes the source sentence for every row.
 
 15
-00:00:41,949 --> 00:00:43,340
-Publishing is refused.
+00:00:33,711 --> 00:00:38,085
+Hedged clauses like reasonable costs are flagged for a human, never invented.
 
 16
-00:00:43,990 --> 00:00:46,223
-The client's revised spec covers all
+00:00:38,435 --> 00:00:39,938
+Send the draft to import.
 
 17
-00:00:46,273 --> 00:00:48,634
-eight stages, so the gate turns ready.
+00:00:39,988 --> 00:00:42,981
+Nothing is rejected, but every drafted row has no
 
 18
-00:00:48,684 --> 00:00:51,678
-Both sign-offs are tied to this exact pack hash.
+00:00:43,031 --> 00:00:45,962
+owner and no client sign-off, so the gate holds.
 
 19
-00:00:52,328 --> 00:00:53,680
-Publish writes once.
+00:00:46,312 --> 00:00:49,731
+A fictional pet insurer sends the handling spec for a new line.
 
 20
-00:00:53,730 --> 00:00:55,644
-A second publish is a no-op,
+00:00:49,781 --> 00:00:50,502
+Fourteen rows.
 
 21
-00:00:55,694 --> 00:00:58,098
-and a fresh read verifies the hash.
+00:00:50,552 --> 00:00:53,256
+I validate it against one shared claims framework.
 
 22
-00:00:58,148 --> 00:01:01,253
-It's a simulated write, in this browser only.
+00:00:53,606 --> 00:00:55,431
+Three rows are rejected outright.
 
 23
-00:01:01,903 --> 00:01:04,365
-In the pilot, the blended median cycle
+00:00:55,481 --> 00:00:57,533
+One identical duplicate is dropped by
 
 24
-00:01:04,415 --> 00:01:06,546
-time falls from ten days to four.
+00:00:57,583 --> 00:00:59,295
+its rule ID, never by its name.
 
 25
-00:01:06,596 --> 00:01:09,587
-But simple and complex claims both got slower.
+00:00:59,345 --> 00:01:02,192
+And the eight stage framework shows what's missing:
 
 26
-00:01:09,637 --> 00:01:12,628
-That's case mix, so the desk says no decision.
+00:01:02,242 --> 00:01:04,976
+no complaint route, and no usable reporting rule.
 
 27
-00:01:13,278 --> 00:01:15,412
-Handler three used the new playbook
+00:01:05,326 --> 00:01:06,526
+So the gate says hold.
 
 28
-00:01:15,462 --> 00:01:17,784
-step on twelve of twenty seven claims.
+00:01:06,576 --> 00:01:09,424
+Handler authority is above the cap, the payment SLA
 
 29
-00:01:17,834 --> 00:01:19,718
-That goes on the product agenda
+00:01:09,474 --> 00:01:13,174
+is too slow, and a coverage rule cites last year's policy wording.
 
 30
-00:01:19,768 --> 00:01:21,965
-as something to test, not a finding.
+00:01:13,224 --> 00:01:14,424
+Publishing is refused.
 
 31
-00:01:22,615 --> 00:01:25,752
-Gaps caught before go live, sign-offs tied to
+00:01:14,774 --> 00:01:16,851
+The client's revised spec covers all
 
 32
-00:01:25,802 --> 00:01:29,788
-exact versions, and metrics that show their denominators.
+00:01:16,901 --> 00:01:19,096
+eight stages, so the gate turns ready.
 
 33
-00:01:29,838 --> 00:01:31,488
+00:01:19,146 --> 00:01:21,932
+Both sign-offs are tied to this exact pack hash.
+
+34
+00:01:22,282 --> 00:01:23,413
+Publish writes once.
+
+35
+00:01:23,463 --> 00:01:25,066
+A second publish is a no-op,
+
+36
+00:01:25,116 --> 00:01:27,132
+and a fresh read verifies the hash.
+
+37
+00:01:27,182 --> 00:01:29,789
+It's a simulated write, in this browser only.
+
+38
+00:01:30,139 --> 00:01:32,256
+In the pilot, the blended median cycle
+
+39
+00:01:32,306 --> 00:01:34,137
+time falls from ten days to four.
+
+40
+00:01:34,187 --> 00:01:36,760
+But simple and complex claims both got slower.
+
+41
+00:01:36,810 --> 00:01:39,382
+That's case mix, so the desk says no decision.
+
+42
+00:01:39,732 --> 00:01:41,641
+Handler three used the new playbook
+
+43
+00:01:41,691 --> 00:01:43,767
+step on twelve of twenty seven claims.
+
+44
+00:01:43,817 --> 00:01:45,502
+That goes on the product agenda
+
+45
+00:01:45,552 --> 00:01:47,517
+as something to test, not a finding.
+
+46
+00:01:47,867 --> 00:01:50,346
+Gaps caught before go live, sign-offs tied to
+
+47
+00:01:50,396 --> 00:01:53,550
+exact versions, and metrics that show their denominators.
+
+48
+00:01:53,600 --> 00:01:54,899
 That's Line Launch Desk.

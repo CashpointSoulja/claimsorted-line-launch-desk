@@ -135,9 +135,11 @@ Rendered checks: Chrome headless at 1366×900 and 390×844, no page errors or co
 
 ```text
 $ ffprobe demo/line-launch-desk-demo.mp4
-h264 1080x1920, aac 48000 Hz stereo, duration 91.934 s
-$ ffmpeg volumedetect, 2 s windows at t=2,10,20,30,40,50,60,70,80,89
-mean_volume -22.6, -21.6, -21.6, -17.7, -20.5, -21.3, -19.7, -20.3, -25.7, -20.2 dB (no silent window)
+h264 1080x1920, aac 48000 Hz stereo, duration 115.174 s
+$ ffmpeg volumedetect, 2 s windows at t=2,12,22,32,42,52,62,72,82,92,102,112
+mean_volume -22.9, -20.3, -18.6, -22.8, -18.8, -18.2, -17.0, -17.9, -18.6, -22.9, -20.7, -19.1 dB (no silent window)
+$ ffmpeg silencedetect noise=-40dB d=0.6
+no silence of 0.6 s or longer
 ```
 
-Frames sampled every 8 s and checked by eye: every frame is the working app with synthetic data, and captions sit below the content.
+Frames sampled every 4 s and checked by eye: every frame is the working app with synthetic data, including the line switcher and the wording drafter, and captions are burned in below the content.
