@@ -1,8 +1,9 @@
 # Line Launch Desk
 
-**Independent concept by Ayo Ahmed for ClaimSorted's Founding Ops & Strategy (London) role. Not affiliated with ClaimSorted.** All clients, rules and claims are synthetic.
+- Live app: https://cashpointsoulja.github.io/claimsorted-line-launch-desk/
+- Demo video: https://drive.google.com/file/d/1_DTgWZ7ykOGdYlVcwWS1DCE6kUyE5zoa/view
 
-Live: https://cashpointsoulja.github.io/claimsorted-line-launch-desk/
+**Independent concept by Ayo Ahmed for ClaimSorted's Founding Ops & Strategy (London) role. Not affiliated with ClaimSorted.** All clients, rules and claims are synthetic.
 
 Line Launch Desk sits between "a client sent us the handling spec for a new line" and "claims handlers are using it". It:
 
