@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Line Launch Desk · independent concept for ClaimSorted</title>
+<meta name="description" content="Launch a new line of business onto one claims-handling framework, and hold go-live until it holds. Independent concept by Ayo Ahmed. Not affiliated with ClaimSorted.">
+<link rel="icon" href="assets/claimsorted-logo.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="./" aria-label="Line Launch Desk home">
+    <img src="assets/claimsorted-logo.svg" alt="ClaimSorted" width="140" height="32">
+    <span class="brand-sep" aria-hidden="true"></span>
+    <span class="brand-product">Line Launch Desk</span>
+  </a>
+  <nav class="nav-links" aria-label="Sections">
+    <a href="#import">Import</a><a href="#gate">Gate</a><a href="#publish">Publish</a><a href="#metrics">Metrics</a><a href="#agenda">Agenda</a>
+  </nav>
+  <a class="btn btn-primary nav-cta" href="#docs">Docs</a>
+</header>
+<p class="indep" role="note">Independent concept by Ayo Ahmed. Not affiliated with ClaimSorted. All clients, rules and claims are synthetic.</p>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow">Founding Ops &amp; Strategy · London</p>
+    <h1>Line Launch Desk</h1>
+    <p class="hero-sub">Add a new line of business without breaking the claims framework</p>
+    <p class="hero-copy">Import a client's handling spec, check it against one shared framework, and keep go-live on hold until every stage has a signed-off, in-date rule. Then measure the pilot without letting a blended number decide for you.</p>
+  </section>
+
+  <ol class="stepper" id="stepper" aria-label="Launch steps"></ol>
+
+  <section class="card" id="import">
+    <div class="card-head"><span class="step-no">1</span><h2>Import the client's handling spec</h2></div>
+    <div class="programme" id="programme"></div>
+    <div class="row-actions">
+      <button class="btn btn-primary" id="load-v1">Load Harbour Pet spec v1</button>
+      <button class="btn btn-ghost" id="load-v2">Load revised spec v2</button>
+      <label class="btn btn-ghost file">Upload CSV<input type="file" id="file" accept=".csv,text/csv"></label>
+    </div>
+    <label class="sr" for="csv">Spec CSV</label>
+    <textarea id="csv" spellcheck="false" rows="9" placeholder="rule_id,stage,rule,owner,authority_limit_gbp,sla_hours,evidence_doc,evidence_version,evidence_date,client_signoff"></textarea>
+    <div class="row-actions"><button class="btn btn-primary" id="validate">Validate spec</button><span class="muted" id="csv-meta"></span></div>
+  </section>
+
+  <section class="card" id="validation">
+    <div class="card-head"><span class="step-no">2</span><h2>Row validation</h2></div>
+    <div id="validation-body" class="empty">Validate a spec to see accepted, rejected and de-duplicated rows.</div>
+  </section>
+
+  <section class="card" id="coverage">
+    <div class="card-head"><span class="step-no">3</span><h2>Framework coverage</h2></div>
+    <p class="muted" id="fw-version"></p>
+    <div id="coverage-body" class="stage-grid"></div>
+  </section>
+
+  <section class="card" id="gate">
+    <div class="card-head"><span class="step-no">4</span><h2>Launch gate</h2></div>
+    <div id="gate-body" class="empty">No spec validated yet.</div>
+  </section>
+
+  <section class="card" id="publish">
+    <div class="card-head"><span class="step-no">5</span><h2>Approve &amp; publish the handling pack</h2></div>
+    <p class="sim">Simulated write. Publishing saves to this browser's localStorage only. No ClaimSorted or client system is touched.</p>
+    <div id="publish-body"></div>
+  </section>
+
+  <section class="card" id="metrics">
+    <div class="card-head"><span class="step-no">6</span><h2>Pilot metrics the claims team runs on</h2></div>
+    <p class="muted">Two synthetic pilot weeks, 110 claims. Every number shows its denominator.</p>
+    <div id="metrics-body"></div>
+  </section>
+
+  <section class="card" id="agenda">
+    <div class="card-head"><span class="step-no">7</span><h2>Frontline → product agenda</h2></div>
+    <p class="muted">Built from the gaps and metric flags above. These are bets to test, not findings about ClaimSorted.</p>
+    <div id="agenda-body"></div>
+    <div class="row-actions">
+      <button class="btn btn-ghost" id="dl-pack">Export handling pack (JSON)</button>
+      <button class="btn btn-ghost" id="dl-cases">Export regression cases (JSON)</button>
+    </div>
+  </section>
+
+  <section class="card" id="events">
+    <div class="card-head"><span class="step-no">·</span><h2>Event log</h2></div>
+    <p class="muted">Events as they would be emitted. Payloads match <a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/event-taxonomy.md">the event taxonomy</a>.</p>
+    <ol id="event-log" class="event-log"></ol>
+  </section>
+
+  <section class="card docs" id="docs">
+    <div class="card-head"><h2>Product documentation</h2></div>
+    <ul class="doc-list">
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/prd.md">PRD</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/five-whys.md">Five Whys</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/event-taxonomy.md">Event taxonomy</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/experiment-design.md">Experiment design</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/validation-plan.md">Validation plan</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/assumptions-and-fit-gaps.md">Assumptions &amp; fit gaps</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/source-ledger.md">Source ledger</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/brand-sheet.md">Brand sheet</a></li>
+      <li><a href="demo/line-launch-desk-demo.mp4">Demo video (MP4)</a></li>
+    </ul>
+  </section>
+</main>
+<footer class="foot">
+  <p>Line Launch Desk is an independent concept by Ayo Ahmed for the Founding Ops &amp; Strategy role. Not affiliated with, endorsed by or built with access to ClaimSorted. ClaimSorted name and logo belong to ClaimSorted. All data is synthetic.</p>
+  <p><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk">Source on GitHub</a> · <button class="linkish" id="reset">Reset local state</button></p>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>
