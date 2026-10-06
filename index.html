@@ -16,7 +16,7 @@
     <span class="brand-product">Line Launch Desk</span>
   </a>
   <nav class="nav-links" aria-label="Sections">
-    <a href="#import">Import</a><a href="#gate">Gate</a><a href="#publish">Publish</a><a href="#metrics">Metrics</a><a href="#agenda">Agenda</a>
+    <a href="#draft">Draft</a><a href="#import">Import</a><a href="#gate">Gate</a><a href="#publish">Publish</a><a href="#metrics">Metrics</a><a href="#agenda">Agenda</a>
   </nav>
   <a class="btn btn-primary nav-cta" href="#docs">Docs</a>
 </header>
@@ -31,6 +31,16 @@
   </section>
 
   <ol class="stepper" id="stepper" aria-label="Launch steps"></ol>
+
+  <section class="card" id="draft">
+    <div class="card-head"><span class="step-no">0</span><h2>Draft from policy wording</h2></div>
+    <p class="muted">Optional. Paste any wording or pick a synthetic sample. A deterministic, rule-based extractor (no API) drafts rows in the import format. Every item shows its source sentence. Anything not found is marked <b>needs human</b>, never invented. Drafted rows are unsigned and have no owner, so they hold launch until a person confirms them.</p>
+    <div class="row-actions" id="wording-samples"></div>
+    <label class="sr" for="wording">Policy wording</label>
+    <textarea id="wording" spellcheck="false" rows="8" placeholder="Paste policy wording here"></textarea>
+    <div class="row-actions"><button class="btn btn-primary" id="draft-run">Draft rules</button><button class="btn btn-ghost" id="draft-send" disabled>Send drafted rows to Import</button><span class="muted" id="draft-meta"></span></div>
+    <div id="draft-body"></div>
+  </section>
 
   <section class="card" id="import">
     <div class="card-head"><span class="step-no">1</span><h2>Import the client's handling spec</h2></div>
@@ -92,7 +102,9 @@
   <section class="card docs" id="docs">
     <div class="card-head"><h2>Product documentation</h2></div>
     <ul class="doc-list">
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/eli5.md">ELI5</a></li>
       <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/prd.md">PRD</a></li>
+      <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/role-fit-memo.md">Role-fit memo</a></li>
       <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/five-whys.md">Five Whys</a></li>
       <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/event-taxonomy.md">Event taxonomy</a></li>
       <li><a href="https://github.com/CashpointSoulja/claimsorted-line-launch-desk/blob/main/docs/experiment-design.md">Experiment design</a></li>

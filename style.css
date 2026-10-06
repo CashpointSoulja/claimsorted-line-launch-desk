@@ -55,6 +55,10 @@ textarea:focus, .btn:focus-visible { outline: 2px solid var(--blue); outline-off
 .tile { background: #fff; border-radius: 16px; padding: 14px; }
 .tile .n { font-size: 30px; font-weight: 600; line-height: 1.1; }
 .tile .l { color: var(--grey); font-size: 13px; }
+.tiles.tiles-4 { grid-template-columns: repeat(4, 1fr); }
+.small { font-size: 12.5px; }
+.src { font-size: 13.5px; quotes: '\201C' '\201D'; }
+.draft-table td:nth-child(4) { min-width: 260px; }
 .table-wrap { overflow-x: auto; background: #fff; border-radius: 16px; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--light); vertical-align: top; }
@@ -128,4 +132,12 @@ code { font-size: 12.5px; background: var(--light); padding: 1px 6px; border-rad
 @media (max-width: 600px) {
   .table-wrap table { min-width: 620px; }
   .metric-grid .table-wrap table { min-width: 0; }
+}
+@media (max-width: 600px) {
+  .table-wrap table.draft-table { min-width: 0; }
+  .draft-table thead { display: none; }
+  .draft-table tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 12px; border-bottom: 1px solid var(--light); }
+  .draft-table td { display: block; padding: 0; border: 0; }
+  .draft-table td:nth-child(3), .draft-table td:nth-child(4) { grid-column: 1 / -1; min-width: 0; }
+  .tiles.tiles-4 { grid-template-columns: repeat(2, 1fr); }
 }
