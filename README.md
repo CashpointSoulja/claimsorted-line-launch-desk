@@ -21,11 +21,25 @@ npm run serve     # http://localhost:8080
 The app is static HTML/CSS/ES modules in `public/`, with no build step, backend, network calls or keys. Logic is in `public/engine.js`, synthetic data in `public/samples.js`.
 
 ## Docs
+Start here: [ELI5](docs/eli5.md) · [30-second explanation](docs/thirty-second-explanation.md)
+
+Product
 - [PRD](docs/prd.md)
+- [Jobs to be done](docs/jtbd.md)
+- [Hypothesis personas](docs/personas.md) (ops lead, claims handler, product manager, MGA client ops contact)
+- [Service blueprint](docs/service-blueprint.md)
+- [User stories and acceptance criteria](docs/user-stories.md)
 - [Five Whys](docs/five-whys.md) (evidence versus assumptions)
+
+Design and data
+- [Data dictionary](docs/data-dictionary.md)
+- [State machines](docs/state-machines.md)
 - [Event taxonomy and metric denominators](docs/event-taxonomy.md)
 - [Experiment design](docs/experiment-design.md)
 - [Validation plan](docs/validation-plan.md)
+- [Risks and limits](docs/risk-and-limits.md)
+- [Privacy](docs/privacy.md) (synthetic only)
+- [Test plan](docs/test-plan.md)
 - [Assumptions and fit gaps](docs/assumptions-and-fit-gaps.md)
 - [Source ledger](docs/source-ledger.md)
 - [Brand sheet](docs/brand-sheet.md)
