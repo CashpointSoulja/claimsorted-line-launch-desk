@@ -29,3 +29,10 @@ All events are emitted in the browser and shown in the in-app event log. Nothing
 |---|---|---|
 | `wording_drafted` | Draft rules clicked | `source` (`sample:<id>` or `pasted`), `status` (`drafted`/`refused`), `sentences`, `drafted`, `ambiguous`, `needs_human` |
 | `draft_sent_to_import` | Drafted rows sent to Import (then validated) | `rows`, `policy_wording_version` |
+
+## Line switcher (illustrative)
+| Event | When | Payload |
+|---|---|---|
+| `line_selected` | A line tab is clicked | `line`, `decision`, `open_gaps`, `stages_covered` |
+
+"Open this line's spec in Import" reuses `spec_loaded`, `spec_validated` and `gate_evaluated`.

@@ -20,6 +20,10 @@ npm run serve     # http://localhost:8080
 ```
 The app is static HTML/CSS/ES modules in `public/`, with no build step, backend, network calls or keys. Logic is in `public/engine.js`, synthetic data in `public/samples.js`.
 
+## Also in the app
+- **Launch readiness by line (illustrative):** the six lines listed on claimsorted.com (property, auto, small commercial, general liability, accident and health including travel, warranty). Each has a fictional client and a synthetic spec, and goes through the same `validateSpec` and `evaluateGate` as the pet example. One line is READY and five HOLD, each for a different reason. Source: `public/lines.js`.
+- **Draft from policy wording:** paste wording or pick one of three synthetic samples (travel, small commercial property, appliance warranty). A deterministic, rule-based extractor with no API drafts rows in the import format for covered events, exclusions, excess, waiting periods, limits, documents needed and eligibility checks. Every item shows its source sentence. Anything not found or ambiguous is marked "needs human", never invented, and drafted rows hold at the gate until a person confirms them. Source: `public/drafter.js`.
+
 ## Docs
 Start here: [ELI5](docs/eli5.md) · [30-second explanation](docs/thirty-second-explanation.md)
 
