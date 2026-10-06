@@ -38,3 +38,14 @@ ok 9 - regression cases and agenda derive from real gaps
 ```
 
 Rendered checks: Chrome headless at 1366×900 and 390×844, no page errors or console errors, `scrollWidth − innerWidth = 0` at both widths.
+
+## Demo video check
+
+```text
+$ ffprobe demo/line-launch-desk-demo.mp4
+h264 1080x1920, aac 48000 Hz stereo, duration 91.934 s
+$ ffmpeg volumedetect, 2 s windows at t=2,10,20,30,40,50,60,70,80,89
+mean_volume -22.6, -21.6, -21.6, -17.7, -20.5, -21.3, -19.7, -20.3, -25.7, -20.2 dB (no silent window)
+```
+
+Frames sampled every 8 s and checked by eye: every frame is the working app with synthetic data, and captions sit below the content.

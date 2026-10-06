@@ -1,0 +1,131 @@
+1
+00:00:00,250 --> 00:00:03,271
+This is Line Launch Desk, an independent concept
+
+2
+00:00:03,321 --> 00:00:06,917
+I built for ClaimSorted's Founding Ops and Strategy role.
+
+3
+00:00:06,967 --> 00:00:09,924
+Every client, rule and claim here is synthetic.
+
+4
+00:00:10,574 --> 00:00:14,544
+A fictional pet insurer sends the handling spec for a new line.
+
+5
+00:00:14,594 --> 00:00:15,438
+Fourteen rows.
+
+6
+00:00:15,488 --> 00:00:18,628
+I validate it against one shared claims framework.
+
+7
+00:00:19,278 --> 00:00:21,357
+Three rows are rejected outright.
+
+8
+00:00:21,407 --> 00:00:23,745
+One identical duplicate is dropped by
+
+9
+00:00:23,795 --> 00:00:25,745
+its rule ID, never by its name.
+
+10
+00:00:25,795 --> 00:00:29,035
+And the eight stage framework shows what's missing:
+
+11
+00:00:29,085 --> 00:00:32,197
+no complaint route, and no usable reporting rule.
+
+12
+00:00:32,847 --> 00:00:34,238
+So the gate says hold.
+
+13
+00:00:34,288 --> 00:00:37,577
+Handler authority is above the cap, the payment SLA
+
+14
+00:00:37,627 --> 00:00:41,899
+is too slow, and a coverage rule cites last year's policy wording.
+
+15
+00:00:41,949 --> 00:00:43,340
+Publishing is refused.
+
+16
+00:00:43,990 --> 00:00:46,223
+The client's revised spec covers all
+
+17
+00:00:46,273 --> 00:00:48,634
+eight stages, so the gate turns ready.
+
+18
+00:00:48,684 --> 00:00:51,678
+Both sign-offs are tied to this exact pack hash.
+
+19
+00:00:52,328 --> 00:00:53,680
+Publish writes once.
+
+20
+00:00:53,730 --> 00:00:55,644
+A second publish is a no-op,
+
+21
+00:00:55,694 --> 00:00:58,098
+and a fresh read verifies the hash.
+
+22
+00:00:58,148 --> 00:01:01,253
+It's a simulated write, in this browser only.
+
+23
+00:01:01,903 --> 00:01:04,365
+In the pilot, the blended median cycle
+
+24
+00:01:04,415 --> 00:01:06,546
+time falls from ten days to four.
+
+25
+00:01:06,596 --> 00:01:09,587
+But simple and complex claims both got slower.
+
+26
+00:01:09,637 --> 00:01:12,628
+That's case mix, so the desk says no decision.
+
+27
+00:01:13,278 --> 00:01:15,412
+Handler three used the new playbook
+
+28
+00:01:15,462 --> 00:01:17,784
+step on twelve of twenty seven claims.
+
+29
+00:01:17,834 --> 00:01:19,718
+That goes on the product agenda
+
+30
+00:01:19,768 --> 00:01:21,965
+as something to test, not a finding.
+
+31
+00:01:22,615 --> 00:01:25,752
+Gaps caught before go live, sign-offs tied to
+
+32
+00:01:25,802 --> 00:01:29,788
+exact versions, and metrics that show their denominators.
+
+33
+00:01:29,838 --> 00:01:31,488
+That's Line Launch Desk.
