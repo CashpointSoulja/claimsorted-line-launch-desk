@@ -1,12 +1,14 @@
 import { FRAMEWORK, APPROVERS, validateSpec, evaluateGate, canonicalPack, hashPack, publishPack, verifyPublication, regressionCases, pilotMetrics, productAgenda } from './engine.js';
 import { PROGRAMME, SPEC_V1, SPEC_V2, PILOT_CLAIMS } from './samples.js';
+import { draftFromWording } from './drafter.js';
+import { WORDINGS } from './wordings.js';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = { get: k => localStorage.getItem(k), set: (k, v) => localStorage.setItem(k, v) };
 const APPROVER_LABEL = { ops_lead: 'ClaimSorted ops lead', client_programme_owner: 'Client programme owner' };
 
-const state = { source: null, validation: null, gate: null, approvals: {}, publish: null, verify: null, events: [] };
+const state = { programme: PROGRAMME, draft: null, wordingSample: null, source: null, validation: null, gate: null, approvals: {}, publish: null, verify: null, events: [] };
 const metrics = pilotMetrics(PILOT_CLAIMS, PROGRAMME.as_of);
 
 function emit(name, payload) {
@@ -14,9 +16,11 @@ function emit(name, payload) {
   renderEvents();
 }
 
-function loadSpec(csv, source) {
+function loadSpec(csv, source, programme = PROGRAMME) {
   $('#csv').value = csv;
   state.source = source;
+  state.programme = programme;
+  renderProgramme();
   invalidate();
   emit('spec_loaded', { source, bytes: csv.length });
 }
@@ -28,7 +32,7 @@ function invalidate() {
 }
 
 function runValidate() {
-  const v = validateSpec($('#csv').value, PROGRAMME);
+  const v = validateSpec($('#csv').value, state.programme);
   state.validation = v; state.gate = evaluateGate(v); state.publish = null; state.verify = null;
   const by = sev => v.issues.filter(i => i.severity === sev).length;
   emit('spec_validated', { source: state.source || 'pasted', rows: v.rowCount, accepted: v.accepted.length, rejected: v.rejected.length, deduped: v.deduped.length, errors: by('error'), blockers: by('blocker') });
@@ -41,7 +45,8 @@ function runValidate() {
 function currentHash() { return state.validation ? hashPack(canonicalPack(state.validation)) : null; }
 
 function renderProgramme() {
-  $('#programme').innerHTML = [['Client', PROGRAMME.client], ['Line', PROGRAMME.line], ['Policy wording', PROGRAMME.policy_wording_version], ['Evidence as of', PROGRAMME.as_of], ['Target go-live', PROGRAMME.go_live]]
+  const P = state.programme;
+  $('#programme').innerHTML = [['Client', P.client], ['Line', P.line], ['Policy wording', P.policy_wording_version], ['Evidence as of', P.as_of], ['Target go-live', P.go_live]]
     .map(([k, v]) => `<div class="kv"><b>${k}</b><span>${esc(v)}</span></div>`).join('');
   $('#fw-version').textContent = `Framework ${FRAMEWORK.version}: ${FRAMEWORK.stages.length} stages every line must cover. Evidence older than ${FRAMEWORK.maxEvidenceAgeDays} days is refused.`;
 }
@@ -84,7 +89,7 @@ function renderGate() {
   el.className = '';
   const head = `<div class="decision ${g.decision}"><span class="big">${g.decision}</span><div>${g.decision === 'READY'
     ? `All ${FRAMEWORK.stages.length} stages have a signed-off, in-date rule. The pack can go to approval.`
-    : `Go-live on ${esc(PROGRAMME.go_live)} stays on hold until these ${g.gaps.length} gaps are closed. Nothing partial gets published.`}</div></div>`;
+    : `Go-live (${esc(state.programme.go_live)}) stays on hold until these ${g.gaps.length} gaps are closed. Nothing partial gets published.`}</div></div>`;
   el.innerHTML = head + (g.gaps.length ? `<ul class="gaps">${g.gaps.map(x => `<li><span class="chip ${x.severity}">${x.severity === 'error' ? 'rejected' : 'blocker'}</span><span><b>${esc(x.rule_id || x.code)}</b> ${esc(x.message)}</span></li>`).join('')}</ul>` : '');
 }
 
@@ -150,7 +155,24 @@ function renderEvents() {
   $('#event-log').innerHTML = state.events.length ? state.events.map(e => `<li><b>${e.name}</b> ${esc(e.at.slice(11, 19))} ${esc(JSON.stringify(e.payload))}</li>`).join('') : '<li>No events yet.</li>';
 }
 
-function render() { renderStepper(); renderValidation(); renderCoverage(); renderGate(); renderPublish(); renderMetrics(); renderAgenda(); renderEvents(); }
+const STATUS_CHIP = { drafted: ['ok', 'drafted'], ambiguous: ['blocker', 'ambiguous: needs human'], needs_human: ['blocker', 'needs human'], not_found: ['error', 'not found: needs human'] };
+
+function renderDraft() {
+  const d = state.draft, el = $('#draft-body');
+  $('#draft-send').disabled = !(d && d.status === 'drafted' && d.rows.length);
+  if (!d) { el.innerHTML = ''; $('#draft-meta').textContent = ''; return; }
+  if (d.status === 'refused') { el.innerHTML = `<div class="result refused">Refused: ${esc(d.reason)}</div>`; $('#draft-meta').textContent = ''; return; }
+  const n = s => d.items.filter(i => s.includes(i.status)).length;
+  $('#draft-meta').textContent = `${d.meta.title || 'Pasted wording'} · version ${d.meta.version || 'needs human'} · effective ${d.meta.date || 'needs human'}`;
+  const tiles = [[d.meta.sentences, 'sentences read'], [n(['drafted']), 'rows drafted'], [n(['ambiguous']), 'ambiguous'], [n(['needs_human', 'not_found']), 'needs human']];
+  el.innerHTML = `<div class="tiles tiles-4">${tiles.map(([v, l]) => `<div class="tile"><div class="n">${v}</div><div class="l">${l}</div></div>`).join('')}</div>
+    <div class="table-wrap"><table class="draft-table"><thead><tr><th>Category</th><th>Status</th><th>Draft</th><th>Source sentence</th></tr></thead><tbody>${d.items.map(i => {
+      const [cls, txt] = STATUS_CHIP[i.status];
+      return `<tr><td>${esc(i.label)}<div class="muted small"><code>${i.stage}</code></div></td><td><span class="chip ${cls}">${txt}</span></td><td>${i.rule_id ? `<b>${esc(i.rule_id)}</b>${i.value ? `<div class="small">${esc(i.value)}</div>` : ''}` : `<span class="small">${esc(i.reason)}</span>`}</td><td>${i.source ? `<q class="src">${esc(i.source)}</q>${i.clause ? ` <span class="muted small">s.${esc(i.clause)}</span>` : ''}` : '<span class="muted">—</span>'}</td></tr>`;
+    }).join('')}</tbody></table></div>`;
+}
+
+function render() { renderDraft(); renderStepper(); renderValidation(); renderCoverage(); renderGate(); renderPublish(); renderMetrics(); renderAgenda(); renderEvents(); }
 
 function download(name, obj) {
   const a = document.createElement('a');
@@ -158,6 +180,25 @@ function download(name, obj) {
   a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
+$('#wording-samples').innerHTML = WORDINGS.map(w => `<button class="btn btn-ghost" data-wording="${w.id}">Sample: ${esc(w.label)}</button>`).join('');
+$('#wording-samples').querySelectorAll('[data-wording]').forEach(b => b.onclick = () => {
+  const w = WORDINGS.find(x => x.id === b.dataset.wording);
+  $('#wording').value = w.text; state.wordingSample = w; state.draft = null; renderDraft();
+});
+$('#wording').oninput = () => { state.wordingSample = null; state.draft = null; renderDraft(); };
+$('#draft-run').onclick = () => {
+  const w = state.wordingSample;
+  state.draft = draftFromWording($('#wording').value, { client: w?.client, line: w?.line, asOf: PROGRAMME.as_of });
+  const d = state.draft, c = s => d.items.filter(i => s.includes(i.status)).length;
+  emit('wording_drafted', { source: w ? `sample:${w.id}` : 'pasted', status: d.status, sentences: d.meta.sentences ?? 0, drafted: c(['drafted']), ambiguous: c(['ambiguous']), needs_human: c(['needs_human', 'not_found']) });
+  renderDraft();
+};
+$('#draft-send').onclick = () => {
+  const d = state.draft; if (!d || d.status !== 'drafted') return;
+  loadSpec(d.csv, `Drafted from ${d.meta.title || 'pasted wording'}`, d.programme);
+  emit('draft_sent_to_import', { rows: d.rows.length, policy_wording_version: d.programme.policy_wording_version });
+  runValidate();
+};
 $('#load-v1').onclick = () => loadSpec(SPEC_V1, 'Harbour Pet spec v1');
 $('#load-v2').onclick = () => loadSpec(SPEC_V2, 'Harbour Pet revised spec v2');
 $('#file').onchange = async e => { const f = e.target.files[0]; if (f) loadSpec(await f.text(), f.name); };
@@ -165,7 +206,7 @@ $('#csv').oninput = () => { state.source = 'edited CSV'; invalidate(); };
 $('#validate').onclick = runValidate;
 $('#dl-pack').onclick = () => { if (!state.validation) return; download('handling-pack.json', { gate: state.gate.decision, pack_hash: currentHash(), ...canonicalPack(state.validation) }); emit('export_downloaded', { kind: 'handling_pack', pack_hash: currentHash() }); };
 $('#dl-cases').onclick = () => { if (!state.validation) return; const rc = regressionCases(state.validation); download('regression-cases.json', rc); emit('export_downloaded', { kind: 'regression_cases', count: rc.length }); };
-$('#reset').onclick = () => { localStorage.removeItem('lld.publications'); state.approvals = {}; state.events = []; loadSpec('', null); $('#csv').value = ''; emit('local_state_reset', {}); };
+$('#reset').onclick = () => { localStorage.removeItem('lld.publications'); state.approvals = {}; state.events = []; state.draft = null; state.wordingSample = null; $('#wording').value = ''; loadSpec('', null); $('#csv').value = ''; emit('local_state_reset', {}); };
 
 renderProgramme();
 metrics && emit('metric_decision', { metric: 'median_cycle_time', decision: metrics.cycleDecision, n_week_1: metrics.cycle[0].n, n_week_2: metrics.cycle[1].n });

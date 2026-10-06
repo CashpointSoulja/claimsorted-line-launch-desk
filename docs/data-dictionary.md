@@ -70,3 +70,19 @@ These limits are illustrative. They aren't ClaimSorted's internal limits or regu
 
 ## Regression case (export)
 `{ case_id: "RC-001", rule_id, line, expect: "reject_row" | "hold_launch", code, why }`
+
+## Drafted rows (from policy wording)
+The drafter (`public/drafter.js`) writes rows in the same 10-column format. It is deterministic and rule-based; no API or model is called.
+
+| Field | Drafted value |
+|---|---|
+| `rule_id` | `DRF-<COV/EXC/XS/WAIT/LIM/DOC/ELIG>-NN`, numbered in order of appearance |
+| `stage` | Covered events, exclusions, waiting periods, eligibility → `COVERAGE`; excess, limits → `ASSESS`; documents needed → `FNOL` |
+| `rule` | Category label plus the source sentence, verbatim |
+| `owner` | `NEEDS_HUMAN`: wording never says who owns a rule |
+| `authority_limit_gbp`, `sla_hours` | Blank. Policy limits are not handler authority |
+| `evidence_doc` | Wording title plus clause number, e.g. `... s.4.2` |
+| `evidence_version`, `evidence_date` | Taken from `Wording version:` / `Effective date:` lines, otherwise `NEEDS_HUMAN` |
+| `client_signoff` | Always `no`. A draft is not a sign-off |
+
+`NEEDS_HUMAN` in any field produces a `NEEDS_HUMAN` blocker in validation, so a drafted row is accepted but can never be launch-ready until a person edits it. Clauses with hedged wording ("we may", "at our discretion", "reasonable", "normally", "may be limited") are listed as ambiguous and drafted as no row. Categories with no matching sentence are listed as "not found: needs human". Empty, non-wording or oversized (over 100,000 characters) input is refused with a reason.

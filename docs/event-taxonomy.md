@@ -23,3 +23,9 @@ All events are emitted in the browser and shown in the in-app event log. Nothing
 - **Median cycle time** = median of (closed − opened) in days over closed claims, **reported per segment**. The blended value is shown but never decided on alone.
 - **30-day reopen rate** = claims reopened within 30 days ÷ claims closed at least 30 days before the as-of date. Immature claims are excluded and their count is shown.
 - **Playbook adoption** = claims where the new playbook step was used ÷ all claims handled, per handler. Target 80%.
+
+## Draft from policy wording
+| Event | When | Payload |
+|---|---|---|
+| `wording_drafted` | Draft rules clicked | `source` (`sample:<id>` or `pasted`), `status` (`drafted`/`refused`), `sentences`, `drafted`, `ambiguous`, `needs_human` |
+| `draft_sent_to_import` | Drafted rows sent to Import (then validated) | `rows`, `policy_wording_version` |

@@ -15,6 +15,8 @@ export const FRAMEWORK = {
   maxEvidenceAgeDays: 180,
 };
 
+export const NEEDS_HUMAN = 'NEEDS_HUMAN';
+
 export const REQUIRED_COLUMNS = [
   'rule_id', 'stage', 'rule', 'owner', 'authority_limit_gbp', 'sla_hours',
   'evidence_doc', 'evidence_version', 'evidence_date', 'client_signoff',
@@ -77,10 +79,10 @@ export function validateSpec(csvText, programme) {
     if (rec.stage && !stage) rowIssues.push(issue('error', 'UNKNOWN_STAGE', `Stage "${rec.stage}" is not in framework ${FRAMEWORK.version}`, rec));
 
     for (const num of ['authority_limit_gbp', 'sla_hours']) {
-      if (rec[num] !== '' && !(Number.isFinite(Number(rec[num])) && Number(rec[num]) >= 0))
+      if (rec[num] !== '' && rec[num] !== NEEDS_HUMAN && !(Number.isFinite(Number(rec[num])) && Number(rec[num]) >= 0))
         rowIssues.push(issue('error', 'BAD_NUMBER', `${num} must be a non-negative number, got "${rec[num]}"`, rec));
     }
-    if (rec.evidence_date && Number.isNaN(Date.parse(rec.evidence_date)))
+    if (rec.evidence_date && rec.evidence_date !== NEEDS_HUMAN && Number.isNaN(Date.parse(rec.evidence_date)))
       rowIssues.push(issue('error', 'BAD_DATE', `evidence_date "${rec.evidence_date}" is not an ISO date`, rec));
 
     if (rowIssues.some(i => i.severity === 'error')) { issues.push(...rowIssues); rejected.push(rec); continue; }
@@ -98,8 +100,12 @@ export function validateSpec(csvText, programme) {
     }
 
     const blockers = [];
-    const sla = rec.sla_hours === '' ? null : Number(rec.sla_hours);
-    const limit = rec.authority_limit_gbp === '' ? null : Number(rec.authority_limit_gbp);
+    const needsHuman = REQUIRED_COLUMNS.filter(c => rec[c] === NEEDS_HUMAN);
+    if (needsHuman.length)
+      blockers.push(issue('blocker', 'NEEDS_HUMAN', `Drafted, not confirmed: ${needsHuman.join(', ')} needs a human`, rec));
+    const num = v => (v === '' || v === NEEDS_HUMAN ? null : Number(v));
+    const sla = num(rec.sla_hours);
+    const limit = num(rec.authority_limit_gbp);
     if (stage.maxSlaHours && sla !== null && sla > stage.maxSlaHours)
       blockers.push(issue('blocker', 'SLA_OVER_FRAMEWORK', `${stage.id} SLA ${sla}h exceeds framework maximum ${stage.maxSlaHours}h`, rec));
     if (stage.maxAuthorityGbp && limit !== null && limit > stage.maxAuthorityGbp)
@@ -107,7 +113,7 @@ export function validateSpec(csvText, programme) {
     const ageDays = Math.floor((asOf - Date.parse(rec.evidence_date)) / DAY);
     if (ageDays > FRAMEWORK.maxEvidenceAgeDays)
       blockers.push(issue('blocker', 'STALE_EVIDENCE', `Evidence dated ${rec.evidence_date} is ${ageDays} days old (max ${FRAMEWORK.maxEvidenceAgeDays})`, rec));
-    if (stage.requiresWordingEvidence && rec.evidence_version !== programme.policy_wording_version)
+    if (stage.requiresWordingEvidence && rec.evidence_version !== NEEDS_HUMAN && programme.policy_wording_version !== NEEDS_HUMAN && rec.evidence_version !== programme.policy_wording_version)
       blockers.push(issue('blocker', 'WORDING_VERSION_MISMATCH', `Cites wording ${rec.evidence_version}; programme wording is ${programme.policy_wording_version}`, rec));
     if (rec.client_signoff.toLowerCase() !== 'yes')
       blockers.push(issue('blocker', 'NO_CLIENT_SIGNOFF', 'Client has not signed off this rule', rec));
